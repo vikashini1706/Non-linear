@@ -1,0 +1,73 @@
+import java.util.*;
+class Main {
+    public static void main(String[] args) {
+      Scanner sc=new Scanner(System.in);
+      int n=sc.nextInt();
+      int  arr[]=new int[n];
+     //root=null;
+      for(int i=0;i<n;i++){
+          arr[i]=sc.nextInt();
+       
+      }
+       inorder( build(0,n-1,arr));
+      
+    }
+    public static Node build(int l,int r,int arr[]){
+        if(l>r){
+            return null;
+        }
+        int mid=l+(r-l)/2;
+        Node root=new Node(arr[mid]);
+       root.left= build(l,mid-1,arr);
+         root.right= build(mid+1,r,arr);
+        return root;
+    }
+    public static void inorder(Node root){
+        if(root==null){
+            return ;
+        }
+        inorder(root.left);
+        System.out.print(root.data+" ");
+         inorder(root.right);
+        
+    }
+    public static Node delete(Node root,int val){
+        if(root==null) return null;
+        else if(root.data>val) root.left=delete(root.left,val);
+        else if(root.data<val) root.right=delete(root.right,val);
+        else{
+            if(root.left==null&&root.right==null){
+                return null;
+            }
+            else if(root.left==null){
+                return root.right;
+            }
+             else if(root.right==null){
+                return root.left;
+            }
+            else{
+                Node min=findmin(root.right);
+                delete(root.right,min.data);
+            }
+        }
+        return root;
+        
+    }
+    public static Node findmin(Node root){
+        while(root!=null){
+            root=root.left;
+        }
+        return root;
+    }
+    
+}
+class Node{
+    int data;
+    Node right;
+      Node left;
+      Node(int data){
+          this.data=data;
+          right=left=null;
+      }
+    
+}
